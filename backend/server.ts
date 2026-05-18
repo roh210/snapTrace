@@ -1,7 +1,16 @@
-import app  from './src/app';
+import app from './src/app';
+import env from './src/config/env';
+import { prisma, connectToDatabase } from './src/config/db';
+import redis from './src/config/redis';
 
-const port: number = 3000;
+const port: number = env.PORT;
 
-app.listen(port,() =>{
-      console.log(`Server is running on port ${port}`);
-})
+const startup = async () => {
+      await connectToDatabase()
+      app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+      })
+}
+
+
+startup()
