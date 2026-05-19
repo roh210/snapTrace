@@ -1,6 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import env from './env';
+import { PrismaClient } from '../../generated/prisma';
+import {PrismaPg} from '@prisma/adapter-pg';
 
-const prisma = new PrismaClient();
+
+const adapter = new PrismaPg({connectionString : env.DATABASE_URL})
+const prisma = new PrismaClient({ adapter });
 
 const connectToDatabase = async () => {
   try {

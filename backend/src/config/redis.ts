@@ -1,9 +1,10 @@
-import { Redis } from 'ioredis';
 import env from './env';
+import { Redis } from 'ioredis';
+
 
 const redis = new Redis(env.REDIS_URL);
 
-redis.on('connect', () => {
+redis.on('ready', () => {
   console.log('Connected to Redis successfully.');
 });
 

@@ -1,5 +1,5 @@
-import app from './src/app';
 import env from './src/config/env';
+import app from './src/app';
 import { prisma, connectToDatabase } from './src/config/db';
 import redis from './src/config/redis';
 
