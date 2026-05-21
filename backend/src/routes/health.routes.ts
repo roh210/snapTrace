@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 
-interface HealthCheck {
+type HealthCheck = {
     uptime: number,
     status: 'OK' | 'Pending' | 'Error',
     timestamp: number

@@ -14,7 +14,7 @@ datasource db {
 
 model Urls{
   urlId String @id @default(uuid())
-  longUrl String @unique
+  longUrl String
   shortCode String @unique
   createdAt DateTime @default(now())
   expiresAt DateTime?
