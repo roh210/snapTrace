@@ -1,5 +1,6 @@
 import { Prisma } from "../../generated/prisma"
 import { prisma } from "../config/db"
+import { AppError } from "../utils/AppError"
 import { generateShortCode } from "../utils/base62"
 
 type CreateUrlResponse = {
@@ -35,5 +36,5 @@ export const createUrl = async (longUrl: string, expiresAt?: Date): Promise<Crea
             throw error
         }
     }
-    throw new Error('Failed to generate unique short code after maximum retries')
+    throw new AppError('Failed to generate unique short code after maximum retries', 503)
 }
