@@ -1,12 +1,7 @@
+import env from "../config/env";
 import redis from "../config/redis";
 
-const r = redis
 
-export const getCachedUrl = async (shortCode: string) => {
-    const cachedData = await r.get(shortCode)
-    return cachedData
-}
+export const getCachedUrl = (shortCode: string) => redis.get(`url:${shortCode}`) 
 
-export const setCachedUrl = async(shortCode:string,longUrl:string) =>{
-  r.set(shortCode,longUrl,'EX',60)
-}
+export const setCachedUrl = (shortCode:string,longUrl:string) => redis.set(`url:${shortCode}`, longUrl, 'EX', env.CACHE_TTL_SECONDS)

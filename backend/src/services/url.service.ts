@@ -45,14 +45,9 @@ export const createUrl = async (longUrl: string, expiresAt?: Date): Promise<Crea
 }
 
 export const getUrl = async (shortCode: string): Promise<GetUrlResponse> => {
+    const urlResponse = await prisma.urls.findUnique({ where: { shortCode } })
 
-    const urlResponse = await prisma.urls.findUnique({
-        where: { shortCode }
-    })
+    if (!urlResponse) throw new AppError('URL not found', 404)
 
-    if (!urlResponse) {
-        throw new AppError('URL not found', 404)
-    }
     return { urlId: urlResponse.urlId, longUrl: urlResponse.longUrl }
-
 }

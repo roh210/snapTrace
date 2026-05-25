@@ -4,7 +4,8 @@ import z from 'zod';
 const envSchema = z.object({
     PORT: z.coerce.number(),
     DATABASE_URL: z.string(),
-    REDIS_URL: z.string()
+    REDIS_URL: z.string(),
+    CACHE_TTL_SECONDS: z.coerce.number()
 })
 const env = (() => {
     try {
