@@ -11,6 +11,11 @@ type CreateUrlResponse = {
     createdAt: Date
 }
 
+type GetUrlResponse = {
+    urlId: string,
+    longUrl: string,
+}
+
 const MAX_RETRIES = 5
 // optimistic write — let DB enforce uniqueness rather than pre-checking - avoids race conditions
 export const createUrl = async (longUrl: string, expiresAt?: Date): Promise<CreateUrlResponse> => {
@@ -37,4 +42,17 @@ export const createUrl = async (longUrl: string, expiresAt?: Date): Promise<Crea
         }
     }
     throw new AppError('Failed to generate unique short code after maximum retries', 503)
+}
+
+export const getUrl = async (shortCode: string): Promise<GetUrlResponse> => {
+
+    const urlResponse = await prisma.urls.findUnique({
+        where: { shortCode }
+    })
+
+    if (!urlResponse) {
+        throw new AppError('URL not found', 404)
+    }
+    return { urlId: urlResponse.urlId, longUrl: urlResponse.longUrl }
+
 }
