@@ -5,7 +5,9 @@ const envSchema = z.object({
     PORT: z.coerce.number(),
     DATABASE_URL: z.string(),
     REDIS_URL: z.string(),
-    CACHE_TTL_SECONDS: z.coerce.number()
+    CACHE_TTL_SECONDS: z.coerce.number(),
+    RATE_LIMIT_REQ: z.coerce.number(),
+    RATE_LIMIT_WINDOW_SECONDS: z.coerce.number()
 })
 const env = (() => {
     try {
