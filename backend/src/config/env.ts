@@ -7,7 +7,8 @@ const envSchema = z.object({
     REDIS_URL: z.string(),
     CACHE_TTL_SECONDS: z.coerce.number(),
     RATE_LIMIT_REQ: z.coerce.number(),
-    RATE_LIMIT_WINDOW_SECONDS: z.coerce.number()
+    RATE_LIMIT_WINDOW_SECONDS: z.coerce.number(),
+    FLUSH_INTERVAL_MS: z.coerce.number()
 })
 const env = (() => {
     try {

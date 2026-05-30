@@ -26,5 +26,5 @@ clickId String @id @default(uuid())
 urlId String
 urlClicked Urls @relation (fields: [urlId], references:[urlId])
 clickedAt DateTime @default(now())
-ipAdress String?
+ipAddress String?
 }
