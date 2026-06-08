@@ -1,26 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapTrace — tiny links</title>
+    <link rel="icon" type="image/x-icon" href="./cats/cat-wave.png">
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="app.js" defer></script>
-    <title>Snap Trace</title>
+    <script type="module" defer src="app.js"></script>
 </head>
+
 <body>
-    <section>
-        <h1>Welcome to Snap Trace</h1>
-        <p>Your go-to URL shortening service with real-time analytics.</p>
-        <form id="urlForm">
-            <input type="url" id="longUrl" placeholder="Enter your long URL here" required>
-            <input type="datetime-local" id="expiresAt" placeholder="Expiration time (optional)">
-            <input type="submit" id="submit" value="Shorten URL">
-        </form>
-        <p id="error" style="display:none; color:red;"></p>
-        <div id="result" style="display: none;">
-            <textarea id="shortUrl" type="text" readonly></textarea> <button id="copy">Copy</button>
-            <textarea id="stats" type="text" readonly></textarea> <button id="viewStats">View Stats</button>
+
+    <div class="phone-world">
+        <div class="phone">
+
+            <!-- Dynamic Island -->
+            <div class="phone-notch">
+                <div class="phone-notch__mic"></div>
+                <div class="phone-notch__cam"></div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="phone-status">
+                <span>9:41</span>
+                <div class="phone-status__icons">
+                    <span>▲▲▲</span><span>WiFi</span><span>100%</span>
+                </div>
+            </div>
+
+            <!-- Screen -->
+            <div class="phone-screen">
+
+                <!-- Hero -->
+                <div class="hero">
+                    <div class="logo">
+                        <span class="logo__snap">snap</span><span class="logo__trace">trace</span>
+                    </div>
+                    <p class="hero__tagline"> 🐾 snap it. share it. track it. 🐾</p>
+
+                    <!-- Cat mascot — state controlled by JS -->
+                    <div class="cat-zone cat-state-wave" id="catZone">
+                        <div class="cat-shadow"></div>
+                        <img class="cat-img" src="cats/cat-wave.png" alt="SnapTrace cat mascot" id="catImg"
+                            draggable="false">
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form class="form-section" id="urlForm" novalidate>
+                    <label class="field-label" for="longUrl">long url</label>
+                    <input class="field-input" type="url" id="longUrl" placeholder="paste your long link here..."
+                        autocomplete="off" spellcheck="false">
+
+                    <label class="field-label" for="expiresAt">
+                        expires at <span style="opacity:0.5;font-weight:400;font-size:9px;">(optional)</span>
+                    </label>
+                    <input class="field-input" type="datetime-local" id="expiresAt">
+
+                    <button class="btn-shorten" type="submit" id="submit">
+                        ✦ shorten url
+                    </button>
+                </form>
+
+                <!-- Error -->
+                <p id="error" role="alert"></p>
+
+                <!-- Result -->
+                <div class="result-wrap">
+                    <div id="result">
+
+                        <div class="result-card">
+                            <div class="result-badge">✦ your snap link</div>
+                            <input id="shortUrl" type="text" readonly aria-label="Shortened URL">
+                            <div class="result-btns">
+                                <button class="btn-copy" id="copy" type="button">📋 copy</button>
+                                <button class="btn-stats" id="viewStats" type="button">📊 stats</button>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <div class="stats-badge">✦ link analytics</div>
+                            <div id="stats"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Home Bar -->
+            <div class="phone-home">
+                <div class="phone-home__bar"></div>
+            </div>
+
         </div>
-    </section>
+    </div>
 </body>
+
 </html>
