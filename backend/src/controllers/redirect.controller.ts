@@ -8,12 +8,16 @@ export const getUrlRequest = async (req: Request<{ shortCode: string }>, res: Re
     try {
         const cachedUrl = await getCachedUrl(shortCode) //cache hit
         if (cachedUrl) {
-            logClick({ urlId: cachedUrl.urlId, ipAddress: req.ip ?? 'unknown' })
+            res.on('finish', () => {
+                logClick({ urlId: cachedUrl.urlId, ipAddress: req.ip ?? 'unknown', longUrl: cachedUrl.longUrl, expiresAt: cachedUrl.expiresAt || null , shortCode })
+            })
             return res.redirect(cachedUrl.longUrl)
         }
         const { longUrl, urlId, expiresAt } = await getUrl(shortCode) //cache miss
-        logClick({ urlId, ipAddress: req.ip ?? 'unknown' })
-        setCachedUrl(shortCode, longUrl, urlId, expiresAt|| null) // fire and forget
+        res.on('finish', () => {
+            logClick({ urlId, ipAddress: req.ip ?? 'unknown', longUrl, expiresAt: expiresAt || null, shortCode })
+        })
+        setCachedUrl(shortCode, longUrl, urlId, expiresAt|| null, 0) // fire and forget
         return res.redirect(longUrl)
 
     } catch (error) {

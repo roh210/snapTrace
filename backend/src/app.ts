@@ -3,6 +3,7 @@ import { errorHandler } from './middleware/error';
 import healthRoute from './routes/health.routes';
 import urls from './routes/url.routes'
 import redirectRoutes from './routes/redirect.routes'
+import eventsRoutes from './routes/events.routes'
 import cors from 'cors';
 
 const app: Application = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 // Registering routes
 app.use('/api', healthRoute);
 app.use('/api/urls', urls)
+app.use('/api', eventsRoutes)
 app.use('/', redirectRoutes)
 
 //catch unmatched routes first
