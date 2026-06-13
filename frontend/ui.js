@@ -66,8 +66,8 @@ export const showStats = (data) => {
         })
         : 'Never ✦'
 
-    const created = new Date(data.createdAt).toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'short'
+    const created = new Date(data.createdAt).toLocaleString('en-GB', {
+        day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
     })
 
     statsEl.innerHTML = `

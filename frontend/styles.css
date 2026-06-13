@@ -87,9 +87,9 @@ body::after {
    ============================================ */
 .phone {
     width: 340px;
-    height: 720px;
+    height: 650px;
     transform-origin: center center;
-    transform: scale(clamp(0.6, calc((100vh - 2rem) / 740px), 1));
+    transform: scale(clamp(0.6, calc((100vh - 2rem) / 690px), 1));
     background: var(--cream);
     border-radius: 52px;
     box-shadow:

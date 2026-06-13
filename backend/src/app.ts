@@ -17,7 +17,7 @@ app.use(express.json());
 // Registering routes
 app.use('/api', healthRoute);
 app.use('/api/urls', urls)
-app.use('/api', eventsRoutes)
+app.use('/api/urls', eventsRoutes)
 app.use('/', redirectRoutes)
 
 //catch unmatched routes first

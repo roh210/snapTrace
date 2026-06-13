@@ -6,15 +6,17 @@ import {
 import { API_BASE_URL, STATS_DEBOUNCE_MS, COPY_RESET_MS } from './config.js'
 
 const viewStatsBtn = document.querySelector('#viewStats')
-const copyBtn      = document.querySelector('#copy')
-const longUrl      = document.querySelector('#longUrl')
-const urlForm      = document.querySelector('#urlForm')
-const expiresAt    = document.querySelector('#expiresAt')
+const copyBtn = document.querySelector('#copy')
+const longUrl = document.querySelector('#longUrl')
+const urlForm = document.querySelector('#urlForm')
+const expiresAt = document.querySelector('#expiresAt')
 
 let currentShortCode = null
-let currentShortUrl  = null
-let resetTimer       = null
-let peekTimer        = null
+let currentShortUrl = null
+let resetTimer = null
+let peekTimer = null
+
+let eventSource = null
 
 /* ── Form submit ── */
 const createShortUrlHandler = async (e) => {
@@ -24,10 +26,17 @@ const createShortUrlHandler = async (e) => {
     setLoading(true)
     const data = await createShortUrl(longUrl.value, expiresAt.value)
     currentShortCode = data.shortCode
-    currentShortUrl  = `${API_BASE_URL}/${currentShortCode}`
+    currentShortUrl = `${API_BASE_URL}/${currentShortCode}`
     showResult(currentShortUrl)
-    const statsData = await fetchStats(currentShortCode)
-    showStats(statsData)
+    eventSource?.close() // close existing connection if any
+    eventSource = null
+    eventSource = new EventSource(`${API_BASE_URL}/api/urls/${currentShortCode}/events`)
+    
+    eventSource.onmessage = async (e) => {
+      const res = JSON.parse(e.data)
+      console.log('Received event:', res)
+      showStats({...res, createdAt:data.createdAt})
+    }
     hideError()
   } catch (error) {
     showError(error.message)
@@ -35,6 +44,15 @@ const createShortUrlHandler = async (e) => {
     setLoading(false)
   }
 }
+
+document.addEventListener('visibilitychange', () => {
+  if (currentShortCode) {
+    if (document.visibilityState === 'hidden') {
+      eventSource.close()
+    }
+  }
+})
+
 urlForm.addEventListener('submit', createShortUrlHandler)
 
 /* ── Typing → cat peeks, returns to idle after pause ── */
@@ -44,7 +62,7 @@ longUrl.addEventListener('input', () => {
 
   setCatState('peek')
 
-  peekTimer  = setTimeout(() => setCatState('idle'), 1500)
+  peekTimer = setTimeout(() => setCatState('idle'), 1500)
   resetTimer = setTimeout(() => resetForm(expiresAt), STATS_DEBOUNCE_MS)
 })
 
