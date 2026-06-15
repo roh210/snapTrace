@@ -1,7 +1,9 @@
 import { createShortUrl, fetchStats } from "./api.js";
+import './js/cat-wiring.js';
+import './js/cat-container.js';
 import {
   setLoading, showResult, showError, showStats,
-  resetForm, hideError, showCelebrate, setCatState
+  resetForm, hideError
 } from "./ui.js";
 import { API_BASE_URL, STATS_DEBOUNCE_MS, COPY_RESET_MS } from './config.js'
 
@@ -14,7 +16,6 @@ const expiresAt = document.querySelector('#expiresAt')
 let currentShortCode = null
 let currentShortUrl = null
 let resetTimer = null
-let peekTimer = null
 
 let eventSource = null
 
@@ -28,14 +29,14 @@ const createShortUrlHandler = async (e) => {
     currentShortCode = data.shortCode
     currentShortUrl = `${API_BASE_URL}/${currentShortCode}`
     showResult(currentShortUrl)
-    eventSource?.close() // close existing connection if any
+    eventSource?.close()
     eventSource = null
     eventSource = new EventSource(`${API_BASE_URL}/api/urls/${currentShortCode}/events`)
-    
+
     eventSource.onmessage = async (e) => {
       const res = JSON.parse(e.data)
       console.log('Received event:', res)
-      showStats({...res, createdAt:data.createdAt})
+      showStats({ ...res, createdAt: data.createdAt })
     }
     hideError()
   } catch (error) {
@@ -55,14 +56,9 @@ document.addEventListener('visibilitychange', () => {
 
 urlForm.addEventListener('submit', createShortUrlHandler)
 
-/* ── Typing → cat peeks, returns to idle after pause ── */
+/* ── Typing → reset form after pause ── */
 longUrl.addEventListener('input', () => {
-  clearTimeout(peekTimer)
   clearTimeout(resetTimer)
-
-  setCatState('peek')
-
-  peekTimer = setTimeout(() => setCatState('idle'), 1500)
   resetTimer = setTimeout(() => resetForm(expiresAt), STATS_DEBOUNCE_MS)
 })
 
@@ -77,23 +73,16 @@ const createViewStatsHandler = async () => {
     showError(error.message)
   }
 }
-viewStatsBtn.addEventListener('click', createViewStatsHandler)
+// viewStatsBtn.addEventListener('click', createViewStatsHandler)
 
-/* ── Copy → cat celebrates ── */
+/* ── Copy ── */
 const copyToClipBoardHandler = () => {
   if (!currentShortUrl) return
   navigator.clipboard.writeText(currentShortUrl)
     .then(() => {
       copyBtn.textContent = '✓ copied!'
       setTimeout(() => copyBtn.textContent = '📋 copy', COPY_RESET_MS)
-      showCelebrate()
     })
     .catch(() => showError('Failed to copy to clipboard'))
 }
 copyBtn.addEventListener('click', copyToClipBoardHandler)
-
-/* ── Page load → wave then settle ── */
-window.addEventListener('load', () => {
-  setCatState('wave')
-  setTimeout(() => setCatState('idle'), 3000)
-})

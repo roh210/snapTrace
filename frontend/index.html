@@ -5,12 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SnapTrace — tiny links</title>
-    <link rel="icon" type="image/x-icon" href="./cats/cat-wave.png">
+    <link rel="icon" type="image/png" href="./snapcat/wave/frame-1.png">
     <link rel="stylesheet" href="styles.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="module" defer src="app.js"></script>
 </head>
 
 <body>
+
+    <!-- Boot screen — full-screen moment before main UI is visible -->
+    <div id="cat-boot" aria-hidden="true">
+
+        <!-- Hanger: string + sprite rotate together around top-center pivot -->
+        <div class="cat-boot__hanger">
+            <div class="cat-boot__string"></div>
+            <img id="cat-boot__sprite" class="cat-boot__sprite"
+                 src="snapcat/initial_loading/frame-1.png" alt="" draggable="false">
+        </div>
+
+        <!-- Progress section below the swinging cat -->
+        <div class="cat-boot__progress-wrap">
+            <div class="cat-boot__progress">
+                <div class="cat-boot__progress-fill"></div>
+            </div>
+            <span class="cat-boot__label">Loading</span>
+        </div>
+
+    </div>
 
     <div class="phone-world">
         <div class="phone">
@@ -38,13 +59,6 @@
                         <span class="logo__snap">snap</span><span class="logo__trace">trace</span>
                     </div>
                     <p class="hero__tagline"> 🐾 snap it. share it. track it. 🐾</p>
-
-                    <!-- Cat mascot — state controlled by JS -->
-                    <div class="cat-zone cat-state-wave" id="catZone">
-                        <div class="cat-shadow"></div>
-                        <img class="cat-img" src="cats/cat-wave.png" alt="SnapTrace cat mascot" id="catImg"
-                            draggable="false">
-                    </div>
                 </div>
 
                 <!-- Form -->
@@ -77,6 +91,7 @@
                                 <button class="btn-copy" id="copy" type="button">📋 copy</button>
                                 <button class="btn-stats" id="viewStats" type="button">📊 stats</button>
                             </div>
+                            <div id="qrcode" class="qr-code"></div>
                         </div>
 
                         <div class="stats-card">

@@ -86,10 +86,9 @@ body::after {
    PHONE FRAME
    ============================================ */
 .phone {
-    width: 340px;
-    height: 650px;
-    transform-origin: center center;
-    transform: scale(clamp(0.6, calc((100vh - 2rem) / 690px), 1));
+    width: 360px;
+    height: 720px;
+    zoom: clamp(0.6, calc((100vh - 2rem) / 740px), 1);
     background: var(--cream);
     border-radius: 52px;
     box-shadow:
@@ -107,8 +106,6 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 1rem;
 }
 
 /* Side button */
@@ -237,99 +234,7 @@ body::after {
     letter-spacing: 0.3px;
 }
 
-/* ============================================
-   CAT MASCOT — STATE MACHINE
-   ============================================ */
-.cat-zone {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 100px;
-    position: relative;
-}
-
-.cat-img {
-    width: 88px;
-    height: 88px;
-    object-fit: contain;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-/* idle — barely perceptible breathe */
-@keyframes catIdle {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-3px);
-    }
-}
-
-/* peek — rises up from below */
-@keyframes catPeek {
-    0% {
-        transform: translateY(12px);
-        opacity: 0.6;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* loading — slow pendulum, transform-origin top */
-@keyframes catSwing {
-
-    0%,
-    100% {
-        transform: rotate(-8deg);
-    }
-
-    50% {
-        transform: rotate(8deg);
-    }
-}
-
-/* success — single clean pop */
-@keyframes catSuccess {
-    0% {
-        transform: scale(0.85) translateY(6px);
-        opacity: 0.5;
-    }
-
-    70% {
-        transform: scale(1.05) translateY(-4px);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-    }
-}
-
-/* celebrate — one clean bounce */
-@keyframes catCelebrate {
-
-    0%,
-    100% {
-        transform: translateY(0) scale(1);
-    }
-
-    40% {
-        transform: translateY(-10px) scale(1.05);
-    }
-
-    70% {
-        transform: translateY(-4px) scale(1.02);
-    }
-}
-
-/* error — minimal, dignified shiver */
+/* error shake — reused by .cat-anim-shake in Phase 3 */
 @keyframes catError {
 
     0%,
@@ -344,77 +249,6 @@ body::after {
     75% {
         transform: translateX(4px);
     }
-}
-
-/* wave — gentle float, no rotation */
-@keyframes catWave {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-.cat-state-idle .cat-img {
-    animation: catIdle 3.5s ease-in-out infinite;
-}
-
-.cat-state-wave .cat-img {
-    animation: catWave 1.8s ease-in-out infinite;
-}
-
-.cat-state-peek .cat-img {
-    animation: catPeek 0.3s ease-out forwards;
-}
-
-.cat-state-loading .cat-img {
-    transform-origin: top center;
-    animation: catSwing 2s ease-in-out infinite alternate;
-}
-
-.cat-state-success .cat-img {
-    animation: catSuccess 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.cat-state-celebrate .cat-img {
-    animation: catCelebrate 0.5s ease-out 2;
-}
-
-.cat-state-error .cat-img {
-    animation: catError 0.4s ease-in-out 2;
-}
-
-/* Cat shadow */
-.cat-shadow {
-    position: absolute;
-    bottom: 4px;
-    width: 56px;
-    height: 10px;
-    background: rgba(201, 165, 90, 0.20);
-    border-radius: 50%;
-    animation: catShadow 3s ease-in-out infinite;
-}
-
-@keyframes catShadow {
-
-    0%,
-    100% {
-        transform: scaleX(1);
-        opacity: 0.4;
-    }
-
-    50% {
-        transform: scaleX(0.65);
-        opacity: 0.15;
-    }
-}
-
-.cat-state-loading .cat-shadow {
-    display: none;
 }
 
 /* ============================================
@@ -623,11 +457,30 @@ body::after {
 }
 
 /* ============================================
+   QR CODE
+   ============================================ */
+.qr-code {
+    display: none;
+    margin-top: 12px;
+    background: var(--cream);
+    padding: 12px;
+    border-radius: var(--radius-lg);
+}
+
+.qr-code > img {
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--radius-md);
+}
+
+
+/* ============================================
    STATS
    ============================================ */
 .stats-card {
     background: var(--blush);
     border-radius: var(--radius-lg);
+    margin-top: 12px;
     padding: 14px 16px;
     border: 1px solid rgba(231, 196, 133, 0.3);
     animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s both;
@@ -676,4 +529,132 @@ body::after {
     font-size: 12px;
     font-weight: 600;
     color: var(--brown-m);
+}
+
+/* ============================================
+   CAT BOOT SCREEN
+   ============================================ */
+#cat-boot {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: radial-gradient(ellipse at 65% 25%, #FDD8CC 0%, #FFF2DB 50%, #FAE3D9 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+#cat-boot.cat-boot--out {
+    opacity: 0;
+}
+
+/* Hanger unit — string + sprite rotate as one around top-center pivot */
+.cat-boot__hanger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: top center;
+    animation: bootSwing 2.6s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+    pointer-events: none;
+}
+
+/* The rope above the sprite */
+.cat-boot__string {
+    width: 2px;
+    height: 72px;
+    background: var(--brown-m);
+    border-radius: 1px;
+    pointer-events: none;
+}
+
+.cat-boot__sprite {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Progress bar */
+.cat-boot__progress-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.cat-boot__progress {
+    width: 200px;
+    height: 12px;
+    background: var(--brown-xl);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.cat-boot__progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-d) 100%);
+    border-radius: var(--radius-pill);
+    animation: bootProgress 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    pointer-events: none;
+}
+
+.cat-boot__label {
+    font-family: var(--font-cute);
+    font-size: 1.4rem;
+    color: var(--brown-m);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+}
+
+@keyframes bootSwing {
+    from { transform: rotate(-14deg); }
+    to   { transform: rotate(14deg); }
+}
+
+@keyframes bootProgress {
+    0%   { width: 0%; }
+    60%  { width: 70%; }
+    85%  { width: 84%; }
+    100% { width: 84%; }
+}
+
+/* ============================================
+   SNAP-CAT — visual layer (Phase 3 revision)
+   ============================================ */
+.snap-cat {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 88px;
+    height: 88px;
+    pointer-events: none;
+    z-index: 10;
+    transform: translateY(calc(100% + 8px));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.snap-cat__sprite {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Two states only — cat springs up from the same corner every time */
+.cat-show { transform: translateY(0); }
+.cat-hide { transform: translateY(calc(100% + 8px)); }
+
+/* Error shake on sprite child — avoids conflicting with parent's transform */
+.cat-show.cat-anim-shake .snap-cat__sprite {
+    animation: catError 0.45s ease-in-out infinite;
 }
