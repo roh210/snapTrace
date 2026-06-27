@@ -35,7 +35,6 @@ const createShortUrlHandler = async (e) => {
 
     eventSource.onmessage = async (e) => {
       const res = JSON.parse(e.data)
-      console.log('Received event:', res)
       showStats({ ...res, createdAt: data.createdAt })
     }
     hideError()
@@ -73,7 +72,7 @@ const createViewStatsHandler = async () => {
     showError(error.message)
   }
 }
-// viewStatsBtn.addEventListener('click', createViewStatsHandler)
+viewStatsBtn.addEventListener('click', createViewStatsHandler)
 
 /* ── Copy ── */
 const copyToClipBoardHandler = () => {
