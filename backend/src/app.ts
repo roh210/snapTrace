@@ -5,11 +5,14 @@ import urls from './routes/url.routes'
 import redirectRoutes from './routes/redirect.routes'
 import eventsRoutes from './routes/events.routes'
 import cors from 'cors';
+import env from './config/env';
 
 const app: Application = express();
 
 // Middleware to enable CORS adds Access-Control-Allow-Origin header to responses, allowing cross-origin requests from any domain. This is useful for APIs that will be accessed from web applications hosted on different domains.
-app.use(cors())
+app.use(cors({
+  origin: env.ALLOWED_ORIGINS
+}))
 
 // Middleware to parse JSON bodies
 app.use(express.json());

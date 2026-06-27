@@ -8,7 +8,8 @@ const envSchema = z.object({
     CACHE_TTL_SECONDS: z.coerce.number(),
     RATE_LIMIT_REQ: z.coerce.number(),
     RATE_LIMIT_WINDOW_SECONDS: z.coerce.number(),
-    FLUSH_INTERVAL_MS: z.coerce.number()
+    FLUSH_INTERVAL_MS: z.coerce.number(),
+    ALLOWED_ORIGINS: z.string().default('http://localhost:3000').transform((value) => value.split(',').map((origin) => origin.trim())),
 })
 const env = (() => {
     try {
