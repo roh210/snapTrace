@@ -5,6 +5,7 @@ import urls from './routes/url.routes'
 import redirectRoutes from './routes/redirect.routes'
 import eventsRoutes from './routes/events.routes'
 import cors from 'cors';
+import path from 'path';
 import env from './config/env';
 
 const app: Application = express();
@@ -16,6 +17,8 @@ app.use(cors({
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '../../../frontend')))
 
 // Registering routes
 app.use('/api', healthRoute);
