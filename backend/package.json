@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "prisma generate && tsc",
+    "build": "prisma generate && tsc && cp -r ../frontend ./dist/public",
     "dev": "nodemon --exec 'ts-node' server.ts"
   },
   "devDependencies": {
