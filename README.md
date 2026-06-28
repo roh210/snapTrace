@@ -2,9 +2,10 @@
 
 > A URL shortener with real-time click analytics, pushed to the browser via Server-Sent Events as they happen.
 
-> [DEMO GIF GOES HERE — 20-30 seconds: create a URL, open the stats view, click the short link in another tab, watch the count update live. This is the single highest-value thing in this whole document. Record it once everything's stable — Loom, or macOS screen recording trimmed in QuickTime, both work fine for a quick GIF via ezgif.com or similar.]
+> Preview of App 
 
-> [LIVE DEMO LINK — once deployed]
+
+> LIVE DEMO LINK — [https://snaptrace.up.railway.app/](https://snaptrace.up.railway.app/)
 
 ## Why this exists
 

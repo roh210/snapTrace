@@ -15,6 +15,7 @@ const expiresAt = document.querySelector('#expiresAt')
 
 let currentShortCode = null
 let currentShortUrl = null
+let currentCreatedAt = null
 let resetTimer = null
 
 let eventSource = null
@@ -28,15 +29,9 @@ const createShortUrlHandler = async (e) => {
     const data = await createShortUrl(longUrl.value, expiresAt.value)
     currentShortCode = data.shortCode
     currentShortUrl = `${API_BASE_URL}/${currentShortCode}`
+    currentCreatedAt = data.createdAt
     showResult(currentShortUrl)
-    eventSource?.close()
-    eventSource = null
-    eventSource = new EventSource(`${API_BASE_URL}/api/urls/${currentShortCode}/events`)
-
-    eventSource.onmessage = async (e) => {
-      const res = JSON.parse(e.data)
-      showStats({ ...res, createdAt: data.createdAt })
-    }
+    connectEventSource()
     hideError()
   } catch (error) {
     showError(error.message)
@@ -45,10 +40,25 @@ const createShortUrlHandler = async (e) => {
   }
 }
 
+function connectEventSource() {
+  if (currentShortCode) {
+    eventSource?.close()
+    eventSource = null
+    eventSource = new EventSource(`${API_BASE_URL}/api/urls/${currentShortCode}/events`)
+    eventSource.onmessage = async (e) => {
+      const res = JSON.parse(e.data)
+      showStats({ ...res, createdAt: currentCreatedAt })
+    }
+  }
+}
+
 document.addEventListener('visibilitychange', () => {
   if (currentShortCode) {
     if (document.visibilityState === 'hidden') {
       eventSource.close()
+    }
+    else if (document.visibilityState === 'visible') {
+      connectEventSource()
     }
   }
 })
