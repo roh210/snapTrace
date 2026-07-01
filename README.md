@@ -2,8 +2,8 @@
 
 > A URL shortener with real-time click analytics, pushed to the browser via Server-Sent Events as they happen.
 
-> Preview of App 
-
+> Preview of App
+> ![alt text](snapTrace-gif.gif)
 
 > LIVE DEMO LINK — [https://snaptrace.up.railway.app/](https://snaptrace.up.railway.app/)
 
